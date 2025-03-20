@@ -41,7 +41,7 @@
 #include <cstdint>
 #include <string>
 
-#include "liblvgl/llemu.h"  
+#include "liblvgl/llemu.h"  // IWYU pragma: keep
 
 namespace pros {
 

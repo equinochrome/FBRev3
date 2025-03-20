@@ -21,11 +21,11 @@
 #define _PROS_ABSTRACT_MOTORS_HPP_
 
 #include <cstdint>
-#include <iostream>
+#include <iostream>// IWYU pragma: keep
 
-#include "pros/device.hpp"
+#include "pros/device.hpp"// IWYU pragma: keep
 #include "pros/motors.h"
-#include "rtos.hpp"
+#include "rtos.hpp" // IWYU pragma: keep
 
 namespace pros {
 inline namespace v5 {
