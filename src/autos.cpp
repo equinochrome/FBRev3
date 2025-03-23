@@ -48,5 +48,36 @@ void liftControl() {
     double velocity = kp * error + deriv * kd;
     LB.move(velocity);
 }
+int pastVoltage = 0;
+
+void ColorSort(){
+    
+    color.set_led_pwm(100);
+    pastVoltage = Hook.get_voltage();
+
+    if (BlueTeam) {
+        if(color.get_hue() < 15){
+
+            Hook.move(0);
+            pros::delay(300);
+            Hook.move(pastVoltage);
+        }
+    } else
+
+    if (RedTeam) {
+        if(color.get_hue() > 200){
+            pros::delay(105);
+            Hook.move(0);
+            pros::delay(300);
+            Hook.move(pastVoltage);
+        }
+    }
+}
+
+
 
 //Autos
+
+void Base6RingPos(){
+    
+};
