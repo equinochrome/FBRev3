@@ -14,6 +14,8 @@
 enum LiftState {
     Stow,
     Prime,
+    Hold,
+    Descore,
     Score,
     Tip,
 };
@@ -23,19 +25,19 @@ static int target = 0;
 
 // Controller
 
-
 static pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-static pros::MotorGroup left_motors(	{-16,-11,14}, pros::MotorGearset::blue);
-static pros::MotorGroup right_motors({12,20,-15}, pros::MotorGearset::blue);
+static pros::MotorGroup left_motors(	{-11    ,-13,14}, pros::MotorGearset::blue);
+static pros::MotorGroup right_motors({15,18,-19}, pros::MotorGearset::blue);
 
 
-static pros::Motor Hook(-10, pros::MotorGearset::blue);
-static pros::Motor Intake(-2, pros::MotorGearset::blue);
-static pros::Motor LB (-13, pros::MotorGearset::green);
+static pros::Motor Hook(-16, pros::MotorGearset::blue);
+static pros::Motor LB (-12, pros::MotorGearset::red);
 
 static pros::adi::DigitalOut IntakePiston('C');
-static pros::adi::DigitalOut Doinker('D'); 
+static pros::adi::DigitalOut LDoinker('D'); 
+static pros::adi::DigitalOut RDoinker('F'); 
+
 static pros::adi::DigitalOut Mogo('E'); 
 
 static pros::Optical color(18);

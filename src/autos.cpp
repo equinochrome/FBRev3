@@ -5,19 +5,73 @@
 #include "pros/rtos.hpp" // IWYU pragma: keep 
 #include "devices.h" // IWYU pragma: keep
 
-
-
-
 //Lift State
+void HoldState() {
+    if (currState == Stow) {
+        currState = Hold;
+    } else if (currState == Prime) {
+        currState = Hold;
+    } else if (currState == Score) {
+        currState = Hold;
+    } else if (currState == Tip) {
+        currState = Hold;
+    } else if (currState == Hold) {
+        currState = Stow;
+    } else if (currState == Descore) {
+        currState = Hold;
+    }
+    updateTarget();
+}
 void nextState() {
     if (currState == Stow) {
         currState = Prime;
     } else if (currState == Prime) {
         currState = Score;
+    } else if (currState == Hold) {
+        currState = Score;
     } else if (currState == Score) {
+        currState = Stow;
+    } else if (currState == Tip) {
+        currState = Stow;
+    } else if (currState == Descore) {
+        currState = Stow;
+      }
+
+updateTarget();
+}
+void descore() {
+    if (currState == Stow) {
+        currState = Descore;
+    } else if (currState == Prime) {
+        currState = Descore;
+    } else if (currState == Score) {
+        currState = Descore;
+    } else if (currState == Tip) {
+        currState = Descore;
+    } else if (currState == Hold) {
+        currState = Descore;
+    } else if (currState == Descore) {
         currState = Stow;
     }
     updateTarget();
+}
+void TipState() {
+    if (currState == Stow) {
+        currState = Tip;
+    } else if (currState == Score) {
+        currState = Tip;
+    } else if (currState == Prime) {
+        currState = Tip;
+    } else if (currState == Hold) {
+        currState = Tip;
+    }  else if (currState == Tip) {
+        currState = Stow;
+    }
+    if (currState == Descore) {
+        currState = Tip;
+    }
+    updateTarget();
+
 }
 
 void updateTarget() {
@@ -26,13 +80,20 @@ void updateTarget() {
             target = 0; // Stow position
             break;
         case Prime:
-            target = 3200; // Prime position
+            target = 3190; // Prime position
+            break;
+        case Hold:
+            target = 7000; // Hold position
+            break;
+        case Descore:
+            target = 15700; // Descore position
             break;
         case Score:
-            target = 16100; // Score position
+            target = 16700; // Score position
             break;
+        
         case Tip:
-            target = 32000; // Tip position
+            target = 24000; // Tip position
             break;
     }
 }

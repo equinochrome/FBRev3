@@ -20,6 +20,8 @@
 
 
 void initialize() {
+	pros::lcd:: initialize();
+	
 	pros::Task liftControlTask([]{
         while (true) {
             
@@ -28,7 +30,6 @@ void initialize() {
         }
     });
 }
-
 
 void disabled() {}
 
@@ -41,8 +42,8 @@ void autonomous() {}
 
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
-
+	static bool HookState = false;
+	bool hookToggleState = false; // Tracks whether the hook is spinning or stopped
  // loop forever
  while (true) {
        
@@ -52,20 +53,49 @@ void opcontrol() {
 
 	chassis.tank(leftY, rightY);
 // Controller Buttons
+	if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+		descore();
+	}
 	if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
 		nextState();
 	}
-
-
-	if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)) {
-		if (currState == Tip) {
-			currState = Stow;
-		} else {
-			currState = Tip;
-		}
-		updateTarget();
+	if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+		TipState();
 	}
 
+	
+	if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		Hook.move(127); // Spin forward when R2 is pressed
+	} else 
+		Hook.move(0); // Stop the hook when no button is pressed
+	
+	if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
+		HoldState();
+	}
+ 	if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+        Mogo.set_value(false);
+        } else 
+        Mogo.set_value(true);
+	
+	
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+		static bool doinkerLState = false;
+		doinkerLState = !doinkerLState;
+		if (doinkerLState) {
+			LDoinker.set_value(true);
+		} else {
+			LDoinker.set_value(false);
+		}
+	}
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+		static bool doinkerRState = false;
+		doinkerRState = !doinkerRState;
+		if (doinkerRState) {
+			RDoinker.set_value(true);
+		} else {
+			RDoinker.set_value(false);
+		}
+	}
 
 	pros::delay(10);
 }
