@@ -15,12 +15,33 @@
 #include "liblvgl/core/lv_disp.h"// IWYU pragma: keep
 #include "liblvgl/core/lv_obj_pos.h" // IWYU pragma: keep
 #include "liblvgl/widgets/lv_img.h" // IWYU pragma: keep
+#include "robodash/api.h" // IWYU pragma: keep
 
+
+rd::Selector selector ({
+	{"BluePosSixRing", BPosSixRing}
+});
+
+rd::Console console;
 
 
 
 void initialize() {
+	currState = Stow;
+	chassis.calibrate();
 	pros::lcd:: initialize();
+	chassis.setPose(0, 0, 0); // Set the initial pose of the robots
+
+	pros::Task screenTask([&]() {
+        while (true) {
+            // print robot location to the brain screen
+            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            // delay to save resources
+            pros::delay(50);
+        }
+    });
 	
 	pros::Task liftControlTask([]{
         while (true) {
@@ -37,7 +58,9 @@ void disabled() {}
 void competition_initialize() {}
 
 
-void autonomous() {}
+void autonomous() {
+	BPosSixRing();
+}
 
 
 void opcontrol() {

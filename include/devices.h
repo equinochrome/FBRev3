@@ -20,7 +20,7 @@ enum LiftState {
     Tip,
 };
 static LiftState currState = Stow;
-static int target = 0;
+static int target = 100;
 
 
 // Controller
@@ -54,13 +54,13 @@ static lemlib::Drivetrain drivetrain(&left_motors, // left motor group
 );
 
 
-// create an imu on port 1
-static pros::Imu imu(4);
+// create an imu on port 10
+static pros::Imu imu(10);
 
 
 // create a v5 rotation sensor on port 7
-static pros::Rotation rotation_sensor(-1);
-static pros::Rotation rotation_sensor2(19);
+static pros::Rotation rotation_sensor(-20);
+static pros::Rotation rotation_sensor2(1);
 static pros::Rotation rotationSensor3(3);
 // create a distance sensor for lb distance
 static pros::Distance color_dist(7);
@@ -68,13 +68,13 @@ static pros::adi::DigitalIn limit('A');
 
 
 // replace 1 with the port the rotation sensor is connected to
-static pros::Rotation vertical_sensor(-1);
-static pros::Rotation horiz_sensor(-19);
+static pros::Rotation vertical_sensor(-20);
+static pros::Rotation horiz_sensor(-1);
 
 // vertical tracking wheel
-static lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor, lemlib::Omniwheel::NEW_2, 0.176743);
+static lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor, lemlib::Omniwheel::NEW_2, -1.130959);
 //horizontal tracker
-static lemlib::TrackingWheel horiz_tracker(&horiz_sensor, lemlib::Omniwheel::NEW_2, -2.875);
+static lemlib::TrackingWheel horiz_tracker(&horiz_sensor, lemlib::Omniwheel::NEW_2, -2.242658);
 
 static lemlib::OdomSensors sensors(
                             &vertical_tracking_wheel, // vertical tracking wheel 1, set to null

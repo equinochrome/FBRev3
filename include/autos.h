@@ -1,7 +1,6 @@
 #pragma once
 //Autos
 #include "devices.h"
-void Base6RingPos();
 
 //Other Stuff
 void liftControl();
@@ -18,3 +17,9 @@ void HoldState();
 
 void descore();
 
+//Match autos
+void SixMogoRush();
+
+void BPosRushQuals();
+
+void BPosSixRing();

@@ -77,23 +77,23 @@ void TipState() {
 void updateTarget() {
     switch (currState) {
         case Stow:
-            target = 0; // Stow position
+            target = 293; // Stow position
             break;
         case Prime:
-            target = 3190; // Prime position
+            target = 3380; // Prime position
             break;
         case Hold:
-            target = 7000; // Hold position
+            target = 7193; // Hold position
             break;
         case Descore:
-            target = 15700; // Descore position
+            target = 15893; // Descore position
             break;
         case Score:
-            target = 16700; // Score position
+            target = 16893; // Score position
             break;
         
         case Tip:
-            target = 24000; // Tip position
+            target = 24193; // Tip position
             break;
     }
 }
@@ -139,6 +139,101 @@ void ColorSort(){
 
 //Autos
 
-void Base6RingPos(){
-    
+void BPosRushQuals(){
+    // 5mogo+1alliance
+    // set up
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    LB.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    BlueTeam = true;
+    RedTeam = false;
+    chassis.setPose(-50.400158, 42.325857, 77.810095); // Set the initial pose of the robot
+    Mogo.set_value(false);
+
+    // rush for middle ring 4 stack
+    LDoinker.set_value(true);
+    Hook.move(127);
+    chassis.moveToPoint(-7.794155, 54.784473, 1000);
+
 };
+
+void SixMogoRush(){
+    // 6mogorush+1alliance
+    // set up
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    LB.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    BlueTeam = true;
+    RedTeam = false;
+    chassis.setPose(-49.472337, 40.987507, 68.584198); // Set the initial pose of the robot
+    Mogo.set_value(false);
+
+    // rush for middle ring 4 stack
+    LDoinker.set_value(true);
+    Hook.move(50);
+    chassis.moveToPoint(-11, 54.5, 1000, {.minSpeed=100});
+	// grab goal
+	pros::delay(200);
+	chassis.moveToPoint(-26, 26, 1000, {.forwards=false, .maxSpeed=80}, false);
+	LDoinker.set_value(false); // let go of rushed ring
+	Mogo.set_value(true);
+	// score rushed rings + single stack
+	chassis.moveToPoint(-24, 64, 3000, {.maxSpeed=70}, true);
+	pros::delay(100);
+	Hook.move(127);
+	// score 2 rings from corner stack
+	chassis.moveToPose(-69, 84, -40, 2000, {.lead=.4, .minSpeed=65});
+	pros::delay(400);
+	nextState();
+	nextState();
+	chassis.moveToPoint(-61, 71, 400, {.forwards=false}, false);
+	IntakePiston.set_value(true);
+	chassis.moveToPoint(-69, 84, 1000, {}, false);
+	IntakePiston.set_value(false);
+	chassis.moveToPoint(-51, 58, 1000, {.forwards=false}, false);
+	chassis.turnToHeading(180, 700, {}, false);
+	nextState();
+	chassis.moveToPoint(-48, 28, 1000, {.maxSpeed=80}, false);
+	pros::delay(500);
+	IntakePiston.set_value(true);
+	pros::delay(100);
+	nextState();
+	chassis.moveToPoint(-48, 6, 1000, {}, false);
+	IntakePiston.set_value(false);
+	chassis.moveToPoint(-48, 9.5, 1000, {.forwards=false}, false);
+	RDoinker.set_value(true);
+	chassis.turnToHeading(270, 700, {}, false);
+	RDoinker.set_value(false);
+	chassis.moveToPoint(-80, 9.5, 500, {}, false);
+	chassis.setPose(0, 0, 270);  // reset pose for relative movement
+	// chassis.moveToPoint(-9, 0, 1000, {.forwards=false}, false);
+}
+
+void BPosSixRing(){
+    //6Ring Blue
+    // setup
+    chassis.setPose(51, -24, 90);
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    LB.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    BlueTeam = true;
+    RedTeam = false;
+    Mogo.set_value(false);
+
+    chassis.moveToPoint(25, -24, 1000, {.forwards=false, .maxSpeed=60}, false);
+    Mogo.set_value(true);
+    pros::delay(50);
+    Hook.move(127);
+    chassis.turnToHeading(-45, 700, {}, false);
+    Hook.move(40);
+    chassis.moveToPoint(5, -7, 1000, {.maxSpeed = 65}, false);
+    LDoinker.set_value(true);
+    pros::delay(50);
+    chassis.swingToHeading(-67.5, lemlib::DriveSide::LEFT, 700, {.minSpeed = 30}, false);
+    RDoinker.set_value(true);
+    pros::delay(50);
+    Hook.move(-50);
+    chassis.moveToPose(40, -32, -90, 5000, {.forwards=false, .lead = .21, .maxSpeed=75, .minSpeed = 35}, false);
+    LDoinker.set_value(false); // this line and below not downloaded as of 4/25
+    RDoinker.set_value(false);
+    pros::delay(50);
+    chassis.moveToPoint(30, -24, 900);
+
+}
